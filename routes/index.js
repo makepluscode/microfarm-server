@@ -1,20 +1,35 @@
 var express = require('express');
 var router = express.Router();
 
+const DhtDB = require('../models/dht');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('dashboard/index', { title: 'ttgoserver' });
 });
 
 router.post('/dht11', function(req, res, next) {
-
-  /* Dummy data for UI test  */
+  var r = req.body.rack;
   var d = {};  
-  d.label = ['17:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
-  d.temp = [21,22,21,23,24,21,21,22,21,24,21,20];
-  d.humidity = [42,32,42,53,43,44,32,42,53,43,44,41];
 
-  res.send(d);
+  DhtDB.
+    find({rack:r}).
+    exec(function (err, docs) {
+      /** check docs */
+      if(!docs) {
+        console.log('db is null.');
+        res.send('null');
+        return;
+      }
+
+      if(0==docs.length) {
+        console.log('db is empty. ' + err);
+        res.send('null');
+        return;
+      }
+
+      d = docs;
+      res.send(d);
+    });
 });
 
 router.post('/relay', function(req, res, next) {

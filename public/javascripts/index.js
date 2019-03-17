@@ -15,15 +15,15 @@ function requestRelayControl(ch) {
 }
 
 function updateData(data) {
-  // code later
   drawGraph(data);
 }
 
-function requestData() {
+function requestData(r) {
   $.ajax({
       type: 'post',
       url: '/dht11',
-      data: {          
+      data: {
+        rack: r
       },
       dataType: 'json',
       success: updateData
@@ -31,13 +31,18 @@ function requestData() {
 }
 
 $(document).ready(function() {
-  requestData();
+  requestData('A1');
 });
 
 function drawGraph(d) {
   'use strict'
 
   feather.replace()
+
+  if(d==null) {
+    alert('no data');
+    return;
+  }
 
   // Graphs
   var ctx = document.getElementById('myChart')

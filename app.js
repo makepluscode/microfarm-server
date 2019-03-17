@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 var expressHbs = require('express-handlebars');
 
 var indexRouter = require('./routes/index');
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost:27017/microfarm', { useNewUrlParser: true });
 
 var app = express();
 
@@ -15,6 +18,7 @@ app.engine('.hbs', expressHbs({
   defaultLayout: 'layout',
   extname: '.hbs'})
 );
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
