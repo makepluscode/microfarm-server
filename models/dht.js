@@ -8,4 +8,4 @@ var schema = new Schema({
   humidity: {type: Number}
 });
 
-module.exports = mongoose.model('dht', schema);
+module.exports = mongoose.model('dhts', schema);

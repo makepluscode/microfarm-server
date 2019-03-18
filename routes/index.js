@@ -9,10 +9,12 @@ router.get('/', function(req, res, next) {
 
 router.post('/dht11', function(req, res, next) {
   var r = req.body.rack;
-  var d = {};  
+  var d = {};
 
   DhtDB.
     find({rack:r}).
+    sort('date').
+    limit(16).
     exec(function (err, docs) {
       /** check docs */
       if(!docs) {
@@ -27,7 +29,18 @@ router.post('/dht11', function(req, res, next) {
         return;
       }
 
-      d = docs;
+      d.rack = r;
+      d.label = new Array();
+      d.temp = new Array();
+      d.humidity = new Array();
+
+      //organize date for chart.js
+      for(var i=0 ; i<docs.length ; i++) {
+        d.label[i] = docs[i].date.toTimeString().substr(0,5);
+        d.temp[i] = docs[i].temp;
+        d.humidity[i] = docs[i].humidity;
+      }
+
       res.send(d);
     });
 });
