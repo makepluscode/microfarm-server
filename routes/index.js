@@ -13,7 +13,7 @@ router.post('/dht11', function(req, res, next) {
 
   DhtDB.
     find({rack:r}).
-    sort('date').
+    sort('-date').
     limit(16).
     exec(function (err, docs) {
       /** check docs */

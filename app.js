@@ -9,6 +9,8 @@ var expressHbs = require('express-handlebars');
 var indexRouter = require('./routes/index');
 var mongoose = require('mongoose');
 
+var mqtt = require('./mqtt/mqtt-wrapper');
+
 mongoose.connect('mongodb://localhost:27017/microfarm', { useNewUrlParser: true });
 
 var app = express();
@@ -45,5 +47,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// mqtt
 
 module.exports = app;
